@@ -34,6 +34,8 @@ dispatch("/hello", Ctx) ->
     ewgi_hello:hello_app(Ctx);
 dispatch("/HELLO", Ctx) ->
     ewgi_hello:to_upper(ewgi_hello:hello_app(Ctx));
+dispatch("/postex", Ctx) ->
+    ewgi_post:post_app(Ctx);
 dispatch(_, Ctx) ->   
     ewgi_api:response_message_body("404 Not Found", 
                                    ewgi_api:response_status({404, "Not Found"}, Ctx)).
