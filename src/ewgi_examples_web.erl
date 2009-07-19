@@ -30,6 +30,8 @@ loop(Req, DocRoot) ->
 dispatcher(Ctx) ->
     dispatch(ewgi_api:path_info(Ctx), Ctx).
 
+dispatch("/", Ctx) ->
+    ewgi_index:handle(Ctx);
 dispatch("/hello", Ctx) ->
     ewgi_hello:hello_app(Ctx);
 dispatch("/HELLO", Ctx) ->
