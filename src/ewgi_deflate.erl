@@ -21,6 +21,7 @@ handle(Ctx) ->
                        false ->
                            Ctx;
                        gzip ->
+                           %% FIXME: does not work if response_message_body streams a file
                            Body1 = zlib:gzip(ewgi_api:response_message_body(Ctx)),
                            Hdrs1 = [{"Content-encoding", "gzip"}|Hdrs],
                            ewgi_api:response_headers(
@@ -28,6 +29,7 @@ handle(Ctx) ->
                              ewgi_api:response_message_body(Body1, Ctx)
                             );
                        deflate ->
+                           %% FIXME: does not work if response_message_body streams a file
                            Body1 = zlib:compress(ewgi_api:response_message_body(Ctx)),
                            Hdrs1 = [{"Content-encoding", "deflate"}|Hdrs],
                            ewgi_api:response_headers(
@@ -54,7 +56,7 @@ can_encode_response1(_ContentType, _ContentEncoding) ->
 parse_encoding(undefined) ->
     false;
 parse_encoding(Encoding) ->
-    %% FIXME: read the specs and see how to do this properly (check the q=X and the order)
+    %% FIXME: read HTTP specs to see how to do this properly (e.g. check the q=X and the order)
     case string:str(Encoding, "gzip") of
         X when X>0 ->
             gzip;
