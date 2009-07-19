@@ -36,6 +36,10 @@ dispatch("/HELLO", Ctx) ->
     ewgi_hello:to_upper(ewgi_hello:hello_app(Ctx));
 dispatch("/postex", Ctx) ->
     ewgi_post:post_app(Ctx);
+dispatch("/test.txt", Ctx) ->
+    ewgi_stream_file:serve_file(Ctx, "priv/www/test.txt");
+dispatch("/gzhello", Ctx) ->
+    ewgi_deflate:handle(ewgi_hello:hello_app(Ctx));
 dispatch(_, Ctx) ->   
     ewgi_api:response_message_body("404 Not Found", 
                                    ewgi_api:response_status({404, "Not Found"}, Ctx)).
